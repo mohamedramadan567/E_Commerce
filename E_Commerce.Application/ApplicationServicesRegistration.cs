@@ -16,7 +16,6 @@ namespace E_Commerce.Application
             services.AddAutoMapper(c => { }, typeof(ApplicationServicesRegistration).Assembly);
 
             services.AddScoped<IProductService, ProductService>();
-
             return services;
         }
     }

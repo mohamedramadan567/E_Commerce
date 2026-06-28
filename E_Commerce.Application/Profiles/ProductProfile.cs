@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Application.Profiles
 {
-    internal class ProfileProduct : Profile
+    internal class ProductProfile : Profile
     {
-        public ProfileProduct()
+        public ProductProfile()
         {
             CreateMap<ProductBrand, BrandDto>();
             CreateMap<ProductType, TypeDto>();
             CreateMap<Product, ProductDto>()
                     .ForMember(dest => dest.ProductBrand, opt => opt.MapFrom(src => src.ProductBrand.Name))
-                    .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType.Name));
+                    .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType.Name))
+                    .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<PictureUrlResolver>());
 
         }
     }
