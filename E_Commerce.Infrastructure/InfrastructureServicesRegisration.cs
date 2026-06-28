@@ -22,6 +22,7 @@ namespace E_Commerce.Infrastructure
             });
 
             services.AddKeyedScoped<IDataSeeder, CatalogDataSeeder>("Catalog");
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }
