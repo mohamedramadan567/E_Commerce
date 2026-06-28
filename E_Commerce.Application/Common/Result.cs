@@ -26,7 +26,7 @@ namespace E_Commerce.Application.Common
     {
         private readonly TValue _value;
 
-        public TValue Data => IsSucces ? _value : throw new InvalidOperationException("Can not Access the value of falied result");
+        public TValue data => IsSucces ? _value : throw new InvalidOperationException("Can not Access the value of falied result");
 
         public Result(TValue value) : base(true, Array.Empty<Error>())
         {
