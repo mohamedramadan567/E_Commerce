@@ -29,9 +29,15 @@ namespace E_Commerce.Infrastructure
         {
             IQueryable<TEntity> query = dbContext.Set<TEntity>();
 
-            SpecificationEvaluator.CreateQuery(query, Spec);
+            query = SpecificationEvaluator.CreateQuery(query, Spec);
 
             return await query.ToListAsync(ct);
+        }
+
+        public async Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, TKey> Spec, CancellationToken ct = default)
+        {
+            var query = SpecificationEvaluator.CreateQuery(dbContext.Set<TEntity>(), Spec);
+            return await query.FirstOrDefaultAsync(ct);
         }
     }
 }
