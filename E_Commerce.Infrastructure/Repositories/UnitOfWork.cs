@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Commerce.Infrastructure
+namespace E_Commerce.Infrastructure.Repositories
 {
     internal class UnitOfWork(StoreDbContext dbContext) : IUnitOfWork
     {
