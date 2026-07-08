@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class ProductsController : ApiBaseController
     {
         private readonly IProductService _service;
