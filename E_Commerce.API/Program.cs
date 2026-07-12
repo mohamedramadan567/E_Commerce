@@ -1,4 +1,4 @@
-
+﻿
 using E_Commerce.API.Extensions;
 using E_Commerce.Application;
 using E_Commerce.Application.Profiles;
@@ -7,6 +7,7 @@ using E_Commerce.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using System.Threading.Tasks;
+using static E_Commerce.Infrastructure.Services.TokenService;
 
 namespace E_Commerce.API
 {
@@ -22,10 +23,11 @@ namespace E_Commerce.API
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
             builder.Services.Configure<UrlSettings>(builder.Configuration.GetSection("UrlSettings"));
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JWT"));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>();
+            //builder.Services.AddIdentity<ApplicationUser, IdentityRole>();
 
 
             var app = builder.Build();
@@ -44,7 +46,9 @@ namespace E_Commerce.API
             });
 
             app.UseHttpsRedirection();
-
+            
+            app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

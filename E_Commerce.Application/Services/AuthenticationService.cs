@@ -12,10 +12,12 @@ namespace E_Commerce.Application.Services
     internal class AuthenticationService : IAuthenticationService
     {
         private readonly IIdentityService _identityService;
+        private readonly ITokenService _tokenService;
 
-        public AuthenticationService(IIdentityService identityService)
+        public AuthenticationService(IIdentityService identityService, ITokenService tokenService)
         {
             _identityService = identityService;
+            _tokenService = tokenService;
         }
         public async Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default)
         {
@@ -31,12 +33,17 @@ namespace E_Commerce.Application.Services
             if (!passwordResult.data)
                 return Result<UserDto>.Fail(Error.Unauthorized("User.Unauthorized", "Not Valid Email or Password"));
 
+            var user = userResult.data;
+            var rolesResult = await _identityService.GetUserRoles(user.Email);
+            var roles = rolesResult.data;
+            var token = _tokenService.CreateToken(user.Id, user.Email, user.UserName, roles);
+
             //Return Result + UserDto
             return Result<UserDto>.Ok(new UserDto()
             { 
                 Email = loginDto.Email,
                 DisplayName = userResult.data.DisplayName,
-                Token = "Token"
+                Token = token
             });
 
         }
@@ -49,11 +56,14 @@ namespace E_Commerce.Application.Services
                 return Result<UserDto>.Fail(result.Errors);
             }
             var user = result.data;
+            var rolesResult = await _identityService.GetUserRoles(user.Email);
+            var roles = rolesResult.data;
+            var token = _tokenService.CreateToken(user.Id, user.Email, user.UserName, roles);
             return Result<UserDto>.Ok(new UserDto()
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "Token"
+                Token = token
             });
         }
     }
