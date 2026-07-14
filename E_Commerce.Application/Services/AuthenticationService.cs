@@ -33,6 +33,9 @@ namespace E_Commerce.Application.Services
             return new UserDto() { DisplayName = user.DisplayName, Email = user.Email, Token = token };
         }
 
+        public async Task<Result<AddressDto>> GetUserAddressAsync(string email, CancellationToken ct = default)
+            => await _identityService.GetUserAddressByEmailAsync(email, ct);
+
         public async Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default)
         {
             //Check User By Email
