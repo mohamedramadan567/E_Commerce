@@ -86,5 +86,36 @@ namespace E_Commerce.Infrastructure.Services
             var roles = await _userManager.GetRolesAsync(user);
             return roles.ToList();
         }
+
+        public async Task<Result<AddressDto>> UpdateOrInsertUserAddressAsync(string email, AddressDto address, CancellationToken ct = default)
+        {
+            var user = await _userManager.Users.Include(u => u.Address).FirstOrDefaultAsync(u => u.Email == email, ct);
+
+            if(user?.Address == null)
+            {
+                user.Address = new Address()
+                {
+                    FirstName = address.FirstName,
+                    LastName = address.LastName,
+                    Country = address.Country,
+                    City = address.City,
+                    Street = address.Street
+                };
+            }
+            else
+            {
+                user.Address.FirstName = address.FirstName;
+                user.Address.LastName = address.LastName;
+                user.Address.Country = address.Country;
+                user.Address.City = address.City;
+                user.Address.Street = address.Street;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if(result.Succeeded)
+                return address;
+
+            return Error.Failure("Failure", string.Join(";", result.Errors.Select(e => e.Description)));
+        }
     }
 }

@@ -44,6 +44,11 @@ namespace E_Commerce.API.Controllers
         [HttpGet("address")]
         public async Task<ActionResult<AddressDto>> GetCurrentUserAddress(CancellationToken ct)
             => ToActionResult(await _authenticationService.GetUserAddressAsync(GetEmailFromToken(), ct));
+
         //Update Current User Address
+        [Authorize]
+        [HttpPut("address")]
+        public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto addressDto, CancellationToken ct)
+            => ToActionResult(await _authenticationService.UpSertUserAddressAsync(GetEmailFromToken(), addressDto, ct));
     }
 }
