@@ -1,7 +1,9 @@
 ﻿using E_Commerce.Application.Contracts;
 using E_Commerce.Application.DTOs.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace E_Commerce.API.Controllers
 {
@@ -32,6 +34,13 @@ namespace E_Commerce.API.Controllers
 
 
         //Get Current User
+        [Authorize]
+        [HttpGet("currentUser")]
+        public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken ct)
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email) ?? throw new UnauthorizedAccessException("No Email Claim Found");
+            return ToActionResult(await _authenticationService.GetCurrentUserAsync(email, ct));
+        }
         //Get Current User Address
         //Update Current User Address
     }
