@@ -25,7 +25,7 @@ namespace E_Commerce.Application.Profiles
                 .ForMember(x => x.ProductName, o => o.MapFrom(x => x.Product.ProductName))
                 .ForMember(x => x.PictureUrl, o => o.MapFrom<OrderItemPictureResolver>());
 
-
+            CreateMap<DeliveryMethod, DeliveryMethodDto>();
         }
     }
 }

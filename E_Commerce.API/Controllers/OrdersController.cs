@@ -37,5 +37,11 @@ namespace E_Commerce.API.Controllers
             return ToActionResult(await _orderService.GetOrderByIdAndEmailForUserAsync(id, GetEmailFromToken(), ct));
         }
         // GET /api/Orders/Delivery Method => List Of Delivery Method
+        [AllowAnonymous]
+        [HttpGet("DeliveryMethod")]
+        public async Task<ActionResult<IReadOnlyList<DeliveryMethodDto>>> GetDeliveryMethods(CancellationToken ct)
+        {
+            return ToActionResult(await _orderService.GetDeliveryMethodsAsync(ct));
+        }
     }
 }
