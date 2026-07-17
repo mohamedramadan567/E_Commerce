@@ -18,7 +18,7 @@ namespace E_Commerce.Infrastructure.Configurations
             builder.OwnsOne(o => o.Product, product =>
             {
                 product.Property(a => a.ProductName).HasMaxLength(100);
-                product.Property(a => a.ProductUrl).HasMaxLength(200);
+                product.Property(a => a.PictureUrl).HasMaxLength(200);
             });
         }
     }
